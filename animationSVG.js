@@ -8,29 +8,25 @@ var clearButton = document.getElementById("clear");
 var rID = 0;
 
 
-
-//FOR CIRCLE FUNCTIONALITY
-var animateCircle = function(){
+var animate_Circle = function(){
 
     window.cancelAnimationFrame(rID);
-    var x = svg.getAttribute("height")/2;
-    var y = canvas.getAttribute("weight")/;2
+    var x = svg.getAttribute("height") / 2;
+    var y = svg.getAttribute("width") / 2;
     var radiusSize = 0;
 
-    //true if increasing, false if decreasing
-    var upDown= true;
-  
-    var makeCircle = function(){
-	
+    var upDown = true;
+    
+
+    var make_Circle = function(){
+	clear();
 	var c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
 	c.setAttribute("cx",x);
 	c.setAttribute("cy",y);
-	c.setAttribute("r","25");
+	c.setAttribute("r",radiusSize);
 	c.setAttribute("fill","blue");
-
 	svg.appendChild(c);
 
-	
 	if (radiusSize < x && upDown == true){
 	    radiusSize++;
 	}
@@ -46,23 +42,20 @@ var animateCircle = function(){
 	    radiusSize++;
 	}
 
-
-	rID = window.requestAnimationFrame(makeCircle);
-    };
-    makeCircle();
+	rID = window.requestAnimationFrame(make_Circle);
+    }
+    make_Circle();
 };
 
-//FOR DVD FUNCTIONALITY
 
 
 var randomStart = function(){
-    var max = 475;
+    var max = 375;
     var min = 0;
     return Math.floor(Math.random() * (max -min + 1) + min);
 };
 
-
-var animateDVD = function(){
+var animate_DVD = function(){
 
     window.cancelAnimationFrame(rID);
     var x = randomStart();
@@ -72,43 +65,46 @@ var animateDVD = function(){
     var bR = function(){
 	x = x + 1.5;
 	y = y + 1;
-    }
+    };
+    
 
     var tR = function(){
 	x = x + 1.5;
 	y = y - 1;
-    }
+    };
 
     var tL = function(){
 	x = x - 1.5;
 	y = y - 1;
-    }
+    };
 
     var bL = function(){
 	x = x - 1.5;
 	y = y + 1;
-    }
+    };
 	
-
-    
     // 0 = bottom right; 1 = top right; 2 = top left; 3 = bottom left
     var dir = 0;
-
-
-
     var makeDVD = function(){
 	clear();
-	ctx.beginPath();
 
 	var width = 125;
 	var height = 50;
+
+
+	var c = document.createElementNS("http://www.w3.org/2000/svg", "image");
+	c.setAttribute("x",x);
+	c.setAttribute("y",y);
+	c.setAttribute("width",width);
+	c.setAttribute("height",height);
+	c.setAttribute("href","https://1.bp.blogspot.com/-fSVZa40RkPs/VuGIjlYMxGI/AAAAAAAATNg/zXqS9Pzqnyc/s1600/bouncing_dvd_logo.jpg");
 	
-	ctx.fillRect(x,y,width,height);
-	ctx.fill();
+	svg.appendChild(c);
 
-	var xMaxBound = canvas.width - width;
-	var yMaxBound = canvas.height - height
-
+	
+	var xMaxBound = svg.getAttribute("width") - width;
+	var yMaxBound = svg.getAttribute("height") - height;
+	
 	if (dir == 0){
 	    if (y >= yMaxBound){
 		dir = 1;
@@ -164,29 +160,24 @@ var animateDVD = function(){
 		bL();
 	    }
 	}
-
 	rID = window.requestAnimationFrame(makeDVD);
     };
     makeDVD();
 };
 
-var stopAnime = function(){
+
+
+var stop = function(){
     window.cancelAnimationFrame(rID);
 };
 
-
 var clear = function(){
-    stopAnime();
     while(svg.firstChild){
 	svg.removeChild(svg.firstChild);
-    }
-    prevX = -1;
-    prevY = -1;
+    };
 };
 
-
-
-circleButton.addEventListener("click", animateCircle);
-dvdButton.addEventListener("click",animateDVD);
-stopButton.addEventListener("click", stopAnime);
-clearButton.addEventListener("click", clear);
+circleButton.addEventListener("click",animate_Circle);
+dvdButton.addEventListener("click",animate_DVD);
+stopButton.addEventListener("click",stop);
+clearButton.addEventListener("click",clear);
